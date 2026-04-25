@@ -580,7 +580,7 @@ html.es [data-lang="es"] { display: revert !important; }
 <nav class="nav" id="nav" aria-label="Main navigation">
     <div class="nav__inner" style="display:flex;align-items:center;width:100%;gap:.6rem;">
       <a href="nectar.html" class="nav__logo" aria-label="nectar labs home">
-        <img class="nav__logo-img" src="assets/logos/nectar-labs-white.png" alt="nectar labs"/>
+        <img class="nav__logo-img" src="assets/logos/nectar-white.png" alt="nectar labs"/>
         <span class="nav__logo-text">nectar labs</span>
       </a>
       <ul class="nav__links" role="list">
@@ -902,7 +902,7 @@ html.es [data-lang="es"] { display: revert !important; }
   <div class="container">
     <div class="footer__inner">
       <div class="footer__brand">
-        <img class="footer__logo" src="assets/logos/nectar-labs-white.png" alt="nectar labs" />
+        <img class="footer__logo" src="assets/logos/nectar-white.png" alt="nectar labs" />
         <div>
           <div style="font-family:var(--font-display);font-size:.95rem;font-weight:700;color:#fff;">nectar labs</div>
           <div class="footer__tagline"><span data-lang="en">Content that drives results.</span><span data-lang="es">Contenido que genera resultados.</span></div>
@@ -1143,6 +1143,7 @@ function switchPortraitTab(tab, btn) {
 }
 </script>
 
+<script>
 // ── DRAWER ──────────────────────────────────────────────────────────────────
 (function(){
   var burger = document.getElementById('siteBurger');
@@ -1153,6 +1154,7 @@ function switchPortraitTab(tab, btn) {
   if (dClose) dClose.addEventListener('click', function(){ drawer.classList.remove('open'); document.body.style.overflow=''; });
   drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ drawer.classList.remove('open'); document.body.style.overflow=''; }); });
 })();
+</script>
 
 </body>
 </html>
