@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" type="image/png" href="assets/favicon/nectar favicon.png"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery — nectar labs</title>
+  <meta name="description" content="A visual portfolio of our work across conferences, gala dinners, booth coverage, team building and networking events."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300;1,9..144,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+:root{--bg:#0B0A08;--bg2:#111009;--surface:#1A1814;--border:rgba(255,255,255,0.07);--ink:#F4F1EC;--muted:rgba(244,241,236,0.4);--orange:#C85A1E;--orange-lt:rgba(200,90,30,0.2);--glow:rgba(200,90,30,0.35);--font-d:'Fraunces',Georgia,serif;--font-b:'DM Sans',system-ui,sans-serif;--ease:cubic-bezier(0.16,1,0.3,1);--gutter:clamp(1.5rem,5vw,4rem);--max:1400px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-b);font-weight:300;line-height:1.6;overflow-x:hidden}
+img{display:block;max-width:100%}a{color:inherit;text-decoration:none}ul{list-style:none}button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+.cur{position:fixed;top:0;left:0;z-index:9999;width:10px;height:10px;border-radius:50%;background:var(--orange);pointer-events:none;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:width .15s,height .15s}
+.cur-ring{position:fixed;top:0;left:0;z-index:9998;width:38px;height:38px;border-radius:50%;border:1px solid rgba(200,90,30,.4);pointer-events:none;transform:translate(-50%,-50%)}
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;padding:1.1rem var(--gutter);transition:background .3s,border-color .3s;border-bottom:1px solid transparent;gap:0}
+.nav.scrolled{background:rgba(11,10,8,.92);backdrop-filter:blur(16px);border-color:var(--border)}
+.nav__logo{display:flex;align-items:center;gap:.6rem;font-family:var(--font-d);font-size:.95rem;font-weight:700;color:#fff}
+.nav__logo img{width:26px;height:26px;object-fit:contain;filter:brightness(10)}
+.nav__links{display:none;gap:2rem;position:absolute;left:50%;transform:translateX(-50%)}
+.nav__links a{font-size:.82rem;color:var(--muted);letter-spacing:.04em;transition:color .2s;position:relative;padding-bottom:2px}
+.nav__links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--orange);transition:width .3s var(--ease)}
+.nav__links a:hover,.nav__links a.active{color:#fff}
+.nav__links a.active::after,.nav__links a:hover::after{width:100%}
+@media(min-width:768px){.nav__links{display:flex}.nav__burger{display:none}}
+.btn-nav{background:transparent;color:var(--orange);border:1.5px solid var(--orange);padding:.5rem 1.3rem;border-radius:100px;font-size:.8rem;font-weight:500;transition:all .2s;flex-shrink:0}
+.btn-nav:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.nav__burger{display:flex;flex-direction:column;gap:5px;padding:4px}
+.nav__burger span{display:block;width:22px;height:1.5px;background:#fff}
+[data-lang="es"]{display:none!important}
+html.es [data-lang="en"]{display:none!important}
+html.es [data-lang="es"]{display:revert!important}
+.lang-sw{position:relative;display:inline-flex;align-items:center;margin-right:.8rem}
+.lang-sw__btn{background:transparent;border:1.5px solid var(--orange);border-radius:4px;color:var(--orange);font-size:.7rem;font-weight:600;letter-spacing:.08em;padding:.22rem .5rem;cursor:pointer;display:flex;align-items:center;gap:.3rem;transition:all .2s}
+.lang-sw__btn:hover{background:var(--orange);border-color:var(--orange);color:#fff}
+.lang-sw__drop{display:none;position:absolute;top:calc(100% + 6px);right:0;background:#1a1814;border:1px solid var(--border);border-radius:6px;overflow:hidden;z-index:9999;min-width:110px}
+.lang-sw__drop a{display:block;padding:.5rem .8rem;font-size:.72rem;color:var(--muted);transition:all .2s;white-space:nowrap}
+.lang-sw__drop a:hover{background:rgba(255,255,255,.06);color:var(--orange)}
+.lang-sw.open .lang-sw__drop{display:block}
+.drawer{position:fixed;top:0;right:-100%;width:min(300px,100vw);height:100dvh;background:#0e0d0b;z-index:300;padding:5rem 2rem 2rem;transition:right .4s var(--ease);border-left:1px solid var(--border)}
+.drawer.open{right:0}
+.drawer ul li{margin-bottom:1.5rem}
+.drawer ul a{font-family:var(--font-d);font-size:1.4rem;color:rgba(255,255,255,.7)}
+.drawer ul a:hover{color:var(--orange)}
+.drawer__close{position:absolute;top:1.5rem;right:1.5rem;font-size:1.3rem;color:var(--muted)}
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--gutter) clamp(3rem,8vw,6rem);position:relative;overflow:hidden}
+.hero__bg{position:absolute;inset:0;z-index:0}
+.hero__grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:80px 80px;opacity:.4}
+.hero__glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,var(--glow) 0%,transparent 70%);top:15%;right:5%;animation:glow 7s ease-in-out infinite}
+@keyframes glow{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.6;transform:scale(1.15)}}
+.hero__content{position:relative;z-index:1;max-width:900px;padding-top:clamp(5rem,12vw,9rem)}
+.hero__eyebrow{font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--orange);margin-bottom:1.5rem;display:flex;align-items:center;gap:.8rem}
+.hero__eyebrow::before{content:'';width:30px;height:1px;background:var(--orange)}
+.hero__title{font-family:var(--font-d);font-size:clamp(3.5rem,10vw,9rem);font-weight:700;line-height:.9;letter-spacing:-.04em;margin-bottom:2rem}
+.hero__title em{font-style:italic;font-weight:300;color:var(--orange);display:block}
+.hero__sub{font-size:clamp(.95rem,2vw,1.15rem);color:var(--muted);max-width:480px;line-height:1.7;margin-bottom:3rem}
+.hero__scroll{display:flex;align-items:center;gap:.8rem;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.hero__scroll-line{width:40px;height:1px;background:var(--muted);animation:sline 2s ease-in-out infinite}
+@keyframes sline{0%,100%{width:40px;opacity:.4}50%{width:70px;opacity:.8}}
+.hero__stats{position:absolute;right:var(--gutter);bottom:clamp(3rem,8vw,6rem);z-index:1;display:flex;flex-direction:column;gap:2rem;align-items:flex-end}
+.hero__stat-item{text-align:right}.hero__stat-num{font-family:var(--font-d);font-size:clamp(1.8rem,3.5vw,3rem);font-weight:700;line-height:1;color:var(--orange)}
+.hero__stat-lbl{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right;max-width:120px;margin-left:auto}
+.filter-bar{position:sticky;top:64px;z-index:100;background:rgba(11,10,8,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 var(--gutter)}
+.filter-bar__inner{max-width:var(--max);margin:0 auto;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.filter-bar__inner::-webkit-scrollbar{display:none}
+.fbtn{flex-shrink:0;padding:1.1rem 1.4rem;font-size:.7rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid transparent;border-top:2px solid transparent;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:.4rem}
+.fbtn:hover{color:#fff}
+.fbtn.active{color:var(--orange);border-bottom-color:var(--orange)}
+.fbtn__c{background:var(--surface);border-radius:100px;padding:.08rem .4rem;font-size:.58rem;transition:background .2s}
+.fbtn.active .fbtn__c{background:var(--orange-lt);color:var(--orange)}
+.gallery-wrap{padding:clamp(2rem,5vw,4rem) var(--gutter) clamp(4rem,8vw,7rem)}
+.ggrid{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:3px}
+.g-hdr{grid-column:1/-1;display:flex;align-items:baseline;gap:1.2rem;padding:3rem 0 1.2rem;border-top:1px solid var(--border);margin-top:1.5rem;scroll-margin-top:140px}
+.g-hdr:first-child{border-top:none;margin-top:0;padding-top:0}
+.g-num{font-size:.62rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--orange)}
+.g-ttl{font-family:var(--font-d);font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:700;line-height:1}
+.g-ttl em{font-style:italic;font-weight:300;color:var(--muted)}
+.g-cnt{font-size:.68rem;color:var(--muted);letter-spacing:.08em;margin-left:auto}
+.g-item{position:relative;overflow:hidden;cursor:pointer;background:var(--surface);height:280px}
+.g-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .65s var(--ease),filter .4s;filter:brightness(.9) saturate(.9)}
+.g-item:hover img{transform:scale(1.07);filter:brightness(1) saturate(1.15)}
+.g-item__ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(200,90,30,.65) 0%,transparent 55%);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:1rem;pointer-events:none}
+.g-item:hover .g-item__ov{opacity:1}
+.g-item__zoom{width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;margin-left:auto;backdrop-filter:blur(8px)}
+.g-item__zoom svg{width:13px;height:13px;stroke:#fff}
+.g-item--tall{grid-row:span 2;height:auto}
+.g-item--wide{grid-column:span 2}
+.g-item--big{grid-column:span 2;grid-row:span 2;height:auto}
+@media(max-width:600px){.g-item--wide,.g-item--big{grid-column:span 1}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:2.5rem var(--gutter) 2rem}
+.ft{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+.ft__logo{display:flex;align-items:center;gap:.6rem}
+.ft__logo img{width:24px;height:24px;filter:brightness(10)}
+.ft__name{font-family:var(--font-d);font-size:.9rem;font-weight:700;color:#fff}
+.ft__tag{font-size:.7rem;color:var(--muted)}
+.ft__nav{display:flex;gap:1.5rem;margin-left:auto;flex-wrap:wrap}
+.ft__nav a{font-size:.75rem;color:var(--muted);transition:color .2s}
+.ft__nav a:hover{color:var(--orange)}
+.ft__social{display:flex;gap:.75rem;align-items:center}
+.ft__bot{max-width:var(--max);margin:.8rem auto 0;padding-top:1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:.65rem;color:rgba(255,255,255,.2)}
+.lb{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.97);display:none;align-items:center;justify-content:center;padding:3rem 5rem}
+.lb.open{display:flex}
+.lb__wrap{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:calc(100% - 80px)}
+.lb__img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;box-shadow:0 0 100px rgba(200,90,30,.12)}
+.lb__close{position:fixed;top:1.2rem;right:1.5rem;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:1rem;transition:background .2s;z-index:1001}
+.lb__close:hover{background:var(--orange)}
+.lb__nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.07);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:1}
+.lb__nav:hover{background:var(--orange)}
+.lb__nav svg{width:20px;height:20px;stroke:#fff}
+.lb__prev{left:-3.5rem}
+.lb__next{right:-3.5rem}
+.lb__info{position:fixed;bottom:68px;left:50%;transform:translateX(-50%);font-size:.68rem;color:rgba(255,255,255,.3);letter-spacing:.12em}
+.lb__strip{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);padding:.6rem var(--gutter);display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;border-top:1px solid var(--border);height:68px}
+.lb__strip::-webkit-scrollbar{display:none}
+.lb__thumb{flex-shrink:0;width:54px;height:42px;border-radius:3px;overflow:hidden;opacity:.35;transition:opacity .2s;cursor:pointer;border:1.5px solid transparent}
+.lb__thumb:hover,.lb__thumb.active{opacity:1;border-color:var(--orange)}
+.lb__thumb img{width:100%;height:100%;object-fit:cover}
+  
+@media (max-width: 767px) {
+  /* NAV already has burger in gallery — good */
+  .nav { padding: .8rem 1rem; }
+
+  /* Hero — stats below content, not overlapping */
+  .hero { padding-bottom: clamp(2rem,5vw,4rem); }
+  .hero__stats {
+    position: relative !important;
+    right: auto !important; bottom: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem !important;
+    margin-top: 2rem !important;
+    padding-top: 1.5rem !important;
+    border-top: 1px solid rgba(255,255,255,.1) !important;
+  }
+  .hero__stat-item { text-align: left !important; }
+  .hero__stat-num { font-size: 2rem !important; }
+  .hero__stat-lbl { text-align: left !important; max-width: none !important; }
+  .hero__title { font-size: clamp(2.5rem,10vw,4rem) !important; }
+
+  /* Filter bar compact */
+  .filter-bar { top: 60px !important; }
+  .fbtn { padding: .65rem .8rem !important; font-size: .62rem !important; }
+
+  /* Gallery grid — 2 columns (Instagram style) */
+  .ggrid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2px !important;
+  }
+  .g-item { height: 180px !important; }
+  /* Section headers full width */
+  .g-hdr { padding: 1.5rem 0 .8rem !important; }
+  .g-ttl { font-size: 1.4rem !important; }
+
+  /* Lightbox full screen on mobile */
+  .lb { padding: 0 !important; }
+  .lb__wrap { padding: 3rem .5rem 5rem !important; }
+  .lb__prev { left: .3rem !important; }
+  .lb__next { right: .3rem !important; }
+
+  /* Footer */
+  .ft { flex-direction: column; gap: 1rem; }
+  .ft__nav { flex-wrap: wrap; gap: .5rem; margin-left: 0 !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<nav class="nav" id="nav">
+  <a href="nectar.html" class="nav__logo">
+    <img src="assets/logos/nectar-labs-white.png" alt="nectar labs"/>
+    nectar labs
+  </a>
+  <ul class="nav__links">
+    <li><a href="nectar.html"><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a></li>
+    <li><a href="services.html"><span data-lang="en">Services</span><span data-lang="es">Servicios</span></a></li>
+    <li><a href="gallery.html" class="active"><span data-lang="en">Gallery</span><span data-lang="es">Galería</span></a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:.6rem;margin-left:auto;">
+    <a href="nectar.html#contact" class="btn-nav"><span data-lang="en">Let's talk</span><span data-lang="es">Hablemos</span></a>
+    <div class="lang-sw" id="langSw">
+      <button class="lang-sw__btn">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+        <span id="langLbl">EN</span> ▾
+      </button>
+      <div class="lang-sw__drop">
+        <a href="#" data-set-lang="en">🇬🇧 English</a>
+        <a href="#" data-set-lang="es">🇪🇸 Español</a>
+      </div>
+    </div>
+    <button class="nav__burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="drawer" id="drawer">
+  <button class="drawer__close" id="dClose">✕</button>
+  <ul>
+    <li><a href="nectar.html"><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a></li>
+    <li><a href="services.html"><span data-lang="en">Services</span><span data-lang="es">Servicios</span></a></li>
+    <li><a href="gallery.html"><span data-lang="en">Gallery</span><span data-lang="es">Galería</span></a></li>
+    <li><a href="nectar.html#contact"><span data-lang="en">Let's talk</span><span data-lang="es">Hablemos</span></a></li>
+  </ul>
+</div>
+
+<section class="hero">
+  <div class="hero__bg">
+    <div class="hero__grid"></div>
+    <div class="hero__glow"></div>
+  </div>
+  <div class="hero__content" id="heroContent">
+    <div class="hero__eyebrow"><span data-lang="en">Visual Portfolio</span><span data-lang="es">Portafolio Visual</span></div>
+    <h1 class="hero__title">
+      <span data-lang="en">Content that<br/><em>builds authority.</em></span>
+      <span data-lang="es">Contenido que<br/><em>construye autoridad.</em></span>
+    </h1>
+    <p class="hero__sub">
+      <span data-lang="en">Conferences, galas, trade shows, team building and networking — photographed with intention.</span>
+      <span data-lang="es">Conferencias, galas, ferias, team building y networking — fotografiados con intención.</span>
+    </p>
+    <div class="hero__scroll"><div class="hero__scroll-line"></div><span data-lang="en">Scroll to explore</span><span data-lang="es">Scroll para explorar</span></div>
+  </div>
+  <div class="hero__stats">
+    <div class="hero__stat-item"><div class="hero__stat-num">200+</div><div class="hero__stat-lbl"><span data-lang="en">Projects delivered</span><span data-lang="es">Proyectos entregados</span></div></div>
+    <div class="hero__stat-item"><div class="hero__stat-num">50+</div><div class="hero__stat-lbl"><span data-lang="en">Corporate events covered</span><span data-lang="es">Eventos corporativos</span></div></div>
+    <div class="hero__stat-item"><div class="hero__stat-num">30+</div><div class="hero__stat-lbl"><span data-lang="en">Countries represented</span><span data-lang="es">Países representados</span></div></div>
+    <div class="hero__stat-item"><div class="hero__stat-num">20+</div><div class="hero__stat-lbl"><span data-lang="en">Trade show &amp; exhibition types</span><span data-lang="es">Tipos de feria y exposición</span></div></div>
+  </div>
+</section>
+
+<div class="filter-bar">
+  <div class="filter-bar__inner">
+    <button class="fbtn active" data-filter="all"><span data-lang="en">All</span><span data-lang="es">Todo</span><span class="fbtn__c">107</span></button>
+    <button class="fbtn" data-filter="conferences"><span data-lang="en">Conferences</span><span data-lang="es">Conferencias</span><span class="fbtn__c">32</span></button>
+    <button class="fbtn" data-filter="gala-dinners"><span data-lang="en">Gala Dinners</span><span data-lang="es">Galas</span><span class="fbtn__c">21</span></button>
+    <button class="fbtn" data-filter="booth-coverage"><span data-lang="en">Booth Coverage</span><span data-lang="es">Stand</span><span class="fbtn__c">38</span></button>
+    <button class="fbtn" data-filter="team-building"><span data-lang="en">Team Building</span><span data-lang="es">Team Building</span><span class="fbtn__c">5</span></button>
+    <button class="fbtn" data-filter="networking-sessions"><span data-lang="en">Networking Sessions</span><span data-lang="es">Networking Sessions</span><span class="fbtn__c">11</span></button>
+  </div>
+</div>
+
+<div class="gallery-wrap">
+  <div class="ggrid" id="grid"></div>
+</div>
+
+<footer>
+  <div class="ft">
+    <div class="ft__logo"><img src="assets/logos/nectar-labs-white.png" alt=""/><div><div class="ft__name">nectar labs</div><div class="ft__tag"><span data-lang="en">Content that drives results.</span><span data-lang="es">Contenido que genera resultados.</span></div></div></div>
+    <nav class="ft__nav">
+      <a href="nectar.html"><span data-lang="en">Home</span><span data-lang="es">Inicio</span></a>
+      <a href="services.html"><span data-lang="en">Services</span><span data-lang="es">Servicios</span></a>
+      <a href="nectar.html#contact"><span data-lang="en">Contact</span><span data-lang="es">Contacto</span></a>
+    </nav>
+    <div class="ft__social">
+      <a href="https://www.linkedin.com/company/itsnectarlabs/" target="_blank" rel="noopener" style="color:rgba(255,255,255,.4);display:inline-flex;"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      <a href="https://api.whatsapp.com/send/?phone=34661656824" target="_blank" rel="noopener" style="color:rgba(255,255,255,.4);display:inline-flex;"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+    </div>
+  </div>
+  <div class="ft__bot"><span>© 2026 nectar labs. All rights reserved.</span><span>Barcelona, Europe.</span></div>
+</footer>
+
+<div class="lb" id="lb">
+  <div class="lb__wrap">
+    <button class="lb__close" id="lbClose">✕</button>
+    <button class="lb__nav lb__prev" id="lbPrev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+    <img class="lb__img" id="lbImg" src="" alt=""/>
+    <button class="lb__nav lb__next" id="lbNext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+  </div>
+  <div class="lb__info" id="lbInfo"></div>
+  <div class="lb__strip" id="lbStrip"></div>
+</div>
+
+<script>
+const SECTIONS=[
+  {id:'conferences',en:'Conferences',es:'Conferencias',num:'01',files:['Conference6286.jpg','Conference6293.jpg','Conference6442.jpg','Conference6478.jpg','Conference6585.jpg','Conference6620.jpg','Conference6547.jpg','Conference6654.jpg','Conference6801.jpg','Conference6709.jpg','Conference7181.jpg','Conference6697.jpg','Conference6851.jpg','Conference5378.jpg','Conference5456.jpg','Conference9259.jpg','Conference9321.jpg','Conference9595NR.jpg','Conference0156.jpg','Conference8953.jpg','Conference8912.jpg','Conference9777.jpg','Conference7895.jpg','Conference7982.jpg','Conference7993.jpg','Conference8093.jpg','Conference7443.JPG','Conference7661.JPG','EventfulConference8233.jpg','EventfulConference8398.jpg','EventfulConference8437.jpg','Conference6468.JPG']},
+  {id:'gala-dinners',en:'Gala Dinners',es:'Galas y Cenas',num:'02',files:['DSC06973.jpg','DSC07891.jpg','DSC07909.jpg','DSC07969.jpg','DSC08016.jpg','DSC08027.jpg','DSC08114.jpg','DSC08123.jpg','DSC08214.jpg','DSC08246.jpg','DSC08288.jpg','DSC08557.jpg','DSC08564.jpg','DSC08777.jpg','DSC00640-NR.jpg','DSC00610.jpg','DSC00688-NR.jpg','DSC00576.jpg','DSC06441.jpg','DSC06447.jpg','DSC08739.jpg']},
+  {id:'booth-coverage',en:'Booth Coverage',es:'Cobertura de Stand',num:'03',files:['DSC02460.jpg','booth6098.jpg','booth6153.jpg','booth6178.jpg','SoundHound%20AI%20booth6195.jpg','DSC09925.jpg','DSC09946.jpg','DSC01020.jpg','DSC00747.jpg','DSC00839.jpg','booth5458.jpg','booth5476.jpg','booth5522.jpg','booth5568.jpg','booth6060.jpg','DSC01123.jpg','DSC01185.jpg','EveryDSC07052.jpg','EveryDSC07138.jpg','EveryDSC07204.jpg','booth6363.jpg','booth6270.jpg','booth6347.jpg','DSC00012-NR.jpg','DSC00044.jpg','DSC06782.jpg','DSC06808.jpg','DSC06883.jpg','DSC06895.jpg','DSC05660-NR.jpg','DSC00091.jpg','DSC00096.jpg','DSC00133.jpg','DSC00139-NR.jpg','DSC09865.jpg','DSC05057.jpg','DSC05924-NR.jpg','DSC04884.jpg']},
+  {id:'team-building',en:'Team Building',es:'Team Building',num:'04',files:['teambuilding0321.jpg','teambuilding0430.jpg','teambuilding0456.jpg','eambuilding0530.jpg','teambuilding0571.jpg']},
+  {id:'networking-sessions',en:'Networking Sessions',es:'Networking Sessions',num:'05',files:['DSC05597.jpg','DSC05614.jpg','DSC05709.jpg','DSC06008.jpg','DSC03061.jpg','DSC03647-NR.jpg','DSC03668-NR.jpg','DSC03900.jpg','DSC03922.jpg','DSC03942.jpg','DSC03834.jpg']}
+];
+const BASE='assets/gallery/';
+const SIZES=['','','','','','','','','','','','','','',''];
+let lbPhotos=[],lbIdx=0,curFilter='all';
+
+// ── BUILD GRID ──
+function buildGrid(filter){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  lbPhotos=[];
+  const secs=filter==='all'?SECTIONS:SECTIONS.filter(s=>s.id===filter);
+  secs.forEach(sec=>{
+    // header
+    const hdr=document.createElement('div');
+    hdr.className='g-hdr reveal';
+    hdr.dataset.sectionId=sec.id;
+    const words=sec.en.split(' ');
+    const ttl=words.length>1?words[0]+' <em>'+words.slice(1).join(' ')+'</em>':sec.en;
+    hdr.innerHTML='<span class="g-num">'+sec.num+' —</span><h2 class="g-ttl">'+ttl+'</h2><span class="g-cnt">'+sec.files.length+' photos</span>';
+    grid.appendChild(hdr);
+    // items
+    const startIdx=lbPhotos.length;
+    sec.files.forEach((f,i)=>{
+      lbPhotos.push({src:BASE+sec.id+'/'+f,cat:sec.id});
+      const sz=SIZES[i%SIZES.length];
+      const div=document.createElement('div');
+      div.className='g-item reveal'+(sz?' g-item--'+sz:'');
+      div.style.transitionDelay=(i%5)*0.06+'s';
+      const idx=startIdx+i;
+      div.innerHTML='<img src="'+BASE+sec.id+'/'+f+'" alt="" loading="lazy"/><div class="g-item__ov"><div class="g-item__zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>';
+      div.addEventListener('click',()=>openLb(idx));
+      grid.appendChild(div);
+    });
+  });
+  grid.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+}
+
+// ── REVEAL ──
+const revObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');revObs.unobserve(e.target)}})},{threshold:0.04});
+
+// ── FILTER ──
+document.querySelectorAll('.fbtn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    curFilter=btn.dataset.filter;
+    buildGrid(curFilter);
+    const fb=document.querySelector('.filter-bar');
+    window.scrollTo({top:fb.offsetTop,behavior:'smooth'});
+  });
+});
+
+// ── LIGHTBOX ──
+function openLb(idx){lbIdx=idx;updateLb();buildStrip();document.getElementById('lb').classList.add('open');document.body.style.overflow='hidden'}
+function closeLb(){document.getElementById('lb').classList.remove('open');document.body.style.overflow=''}
+function updateLb(){
+  document.getElementById('lbImg').src=lbPhotos[lbIdx].src;
+  document.getElementById('lbInfo').textContent=(lbIdx+1)+' / '+lbPhotos.length;
+  document.querySelectorAll('.lb__thumb').forEach((t,i)=>t.classList.toggle('active',i===lbIdx));
+  const t=document.querySelectorAll('.lb__thumb')[lbIdx];
+  if(t)t.scrollIntoView({inline:'center',behavior:'smooth'});
+}
+function buildStrip(){
+  const s=document.getElementById('lbStrip');
+  s.innerHTML='';
+  lbPhotos.forEach((p,i)=>{
+    const b=document.createElement('button');
+    b.className='lb__thumb'+(i===lbIdx?' active':'');
+    b.innerHTML='<img src="'+p.src+'" alt="" loading="lazy"/>';
+    b.addEventListener('click',()=>{lbIdx=i;updateLb()});
+    s.appendChild(b);
+  });
+}
+document.getElementById('lbClose').addEventListener('click',closeLb);
+document.getElementById('lbPrev').addEventListener('click',()=>{lbIdx=(lbIdx-1+lbPhotos.length)%lbPhotos.length;updateLb()});
+document.getElementById('lbNext').addEventListener('click',()=>{lbIdx=(lbIdx+1)%lbPhotos.length;updateLb()});
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('lb').classList.contains('open'))return;
+  if(e.key==='Escape')closeLb();
+  if(e.key==='ArrowLeft'){lbIdx=(lbIdx-1+lbPhotos.length)%lbPhotos.length;updateLb()}
+  if(e.key==='ArrowRight'){lbIdx=(lbIdx+1)%lbPhotos.length;updateLb()}
+});
+// touch swipe on lightbox
+let lbTX=null;
+document.getElementById('lb').addEventListener('touchstart',e=>{lbTX=e.touches[0].clientX},{passive:true});
+document.getElementById('lb').addEventListener('touchend',e=>{
+  if(lbTX===null)return;
+  const dx=e.changedTouches[0].clientX-lbTX;
+  if(Math.abs(dx)>50){lbIdx=dx<0?(lbIdx+1)%lbPhotos.length:(lbIdx-1+lbPhotos.length)%lbPhotos.length;updateLb()}
+  lbTX=null;
+});
+
+// ── CURSOR ──
+const cur=document.getElementById('cur'),ring=document.getElementById('curRing');
+if(window.matchMedia('(pointer:fine)').matches){
+  document.addEventListener('mousemove',e=>{
+    cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+    ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';
+  });
+  document.querySelectorAll('a,button,.g-item').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.style.width='18px';cur.style.height='18px'});
+    el.addEventListener('mouseleave',()=>{cur.style.width='10px';cur.style.height='10px'});
+  });
+}
+
+// ── NAV ──
+const navEl=document.getElementById('nav');
+window.addEventListener('scroll',()=>navEl.classList.toggle('scrolled',scrollY>50),{passive:true});
+document.getElementById('burger').addEventListener('click',()=>document.getElementById('drawer').classList.add('open'));
+document.getElementById('dClose').addEventListener('click',()=>document.getElementById('drawer').classList.remove('open'));
+
+// ── LANG ──
+(function(){
+  var html=document.documentElement;
+  var saved=localStorage.getItem('nl-lang')||'en';
+  html.classList.remove('es');if(saved==='es')html.classList.add('es');
+  var lbl=document.getElementById('langLbl');if(lbl)lbl.textContent=saved.toUpperCase();
+  var sw=document.getElementById('langSw');if(!sw)return;
+  sw.querySelector('.lang-sw__btn').addEventListener('click',function(e){e.stopPropagation();sw.classList.toggle('open')});
+  document.addEventListener('click',function(){sw.classList.remove('open')});
+  sw.querySelectorAll('[data-set-lang]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      e.preventDefault();var lang=a.getAttribute('data-set-lang');
+      html.classList.remove('es');if(lang==='es')html.classList.add('es');
+      localStorage.setItem('nl-lang',lang);sw.classList.remove('open');
+      if(lbl)lbl.textContent=lang.toUpperCase();
+    });
+  });
+})();
+
+// ── HERO ENTRANCE ──
+Array.from(document.getElementById('heroContent').children).forEach((el,i)=>{
+  el.style.cssText='opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(0.16,1,0.3,1) '+(i*0.13)+'s,transform .8s cubic-bezier(0.16,1,0.3,1) '+(i*0.13)+'s';
+  setTimeout(()=>{el.style.opacity='1';el.style.transform='translateY(0)'},80);
+});
+
+buildGrid('all');
+attachSpyObs();
+
+
+
+// ── SCROLL SPY for filter bar ─────────────────────────────────────────────
+// Scroll spy using IntersectionObserver — more reliable than scroll events
+const _spyObs = new IntersectionObserver(entries => {
+  if (curFilter !== 'all') return;
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.dataset.sectionId || 'all';
+      document.querySelectorAll('.fbtn').forEach(btn => {
+        btn.classList.toggle('active',
+          btn.dataset.filter === id || (id === 'all' && btn.dataset.filter === 'all')
+        );
+      });
+    }
+  });
+}, { rootMargin: '-130px 0px -60% 0px', threshold: 0 });
+// Attach after grid builds
+function attachSpyObs() {
+  document.querySelectorAll('.g-hdr[data-section-id]').forEach(h => _spyObs.observe(h));
+}
+
+// ── FIX EMPTY CELLS — use CSS grid auto-flow dense ───────────────────────────
+
+</script>
+</body>
+</html>
